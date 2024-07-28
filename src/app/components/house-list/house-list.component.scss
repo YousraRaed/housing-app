@@ -1,5 +1,7 @@
+@import "../../../scss/colors.scss";
+
 .model-group {
-  border: 1px solid #ddd;
+  border: 1px solid $light-gray;
   margin-bottom: 10px;
   border-radius: 5px;
   padding: 10px;
@@ -33,8 +35,8 @@
 }
 
 .btn-primary {
-  background-color: #007bff;
-  border-color: #007bff;
+  background-color: $blue;
+  border-color: $blue;
   color: #fff;
 }
 .btn {
