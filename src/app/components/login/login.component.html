@@ -1,0 +1,64 @@
+<form
+  [formGroup]="loginForm"
+  (ngSubmit)="onSubmit()"
+  class="form-inline ml-auto"
+>
+  <div class="question">
+    <input
+      type="text"
+      class="form-control mr-2"
+      placeholder="Username"
+      formControlName="username"
+      required
+    />
+    <div
+      *ngIf="
+        loginForm.get('username')?.invalid &&
+        (loginForm.get('username')?.dirty || loginForm.get('username')?.touched)
+      "
+      class="text-danger"
+    >
+      <small *ngIf="loginForm.get('username')?.errors?.['required']"
+        >Username is required.</small
+      >
+      <small *ngIf="loginForm.get('username')?.errors?.['minlength']"
+        >Username must be at least 4 characters long.</small
+      >
+    </div>
+  </div>
+  <div class="question">
+    <input
+      type="password"
+      class="form-control mr-2"
+      placeholder="Password"
+      formControlName="password"
+      required
+    />
+    <div
+      *ngIf="
+        loginForm.get('password')?.invalid &&
+        (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)
+      "
+      class="text-danger"
+    >
+      <small *ngIf="loginForm.get('password')?.errors?.['required']"
+        >Password is required.</small
+      >
+      <small *ngIf="loginForm.get('password')?.errors?.['minlength']"
+        >Password must be at least 6 characters long.</small
+      >
+      <small *ngIf="loginForm.get('password')?.errors?.['passwordStrength']"
+        >Password must include at least one number and one special
+        character.</small
+      >
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-primary d-flex align-items-center">
+    <span>Login</span>
+    <i class="fas fa-chevron-right ml-2"></i>
+  </button>
+</form>
+<div *ngIf="error$ | async as error" class="alert alert-danger mt-2">
+  {{ error }}
+</div>

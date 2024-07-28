@@ -1,0 +1,10 @@
+<div class="container-dashboard">
+  <app-house-list></app-house-list>
+  <button
+    *ngIf="isAuthenticated$ | async"
+    class="btn btn-primary"
+    (click)="openAddHouse()"
+  >
+    Create New House
+  </button>
+</div>

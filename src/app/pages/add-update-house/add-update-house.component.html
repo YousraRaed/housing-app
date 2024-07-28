@@ -1,0 +1,168 @@
+<div class="container">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/">House list</a></li>
+      <li class="breadcrumb-item active" aria-current="page">
+        {{ houseId ? (houseNumber ? houseNumber : "Edit House") : "Add House" }}
+      </li>
+    </ol>
+  </nav>
+  <h2>
+    {{ houseId ? (houseNumber ? houseNumber : "Edit House") : "Add House" }}
+  </h2>
+  <form [formGroup]="houseForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="house_number">House Number</label>
+          <input
+            id="house_number"
+            formControlName="house_number"
+            class="form-control"
+          />
+
+          <div
+            *ngIf="
+              houseForm.get('house_number')?.touched ||
+              houseForm.get('house_number')?.dirty
+            "
+            class="text-danger"
+          >
+            <div *ngIf="houseForm.get('house_number')?.errors?.['required']">
+              House number is required
+            </div>
+            <div *ngIf="houseNumberTaken" class="text-danger">
+              This house number is already taken
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="block_number">Block Number</label>
+          <input
+            id="block_number"
+            formControlName="block_number"
+            class="form-control"
+          />
+          <div
+            *ngIf="
+              houseForm.get('block_number')?.invalid &&
+              (houseForm.get('block_number')?.touched ||
+                houseForm.get('block_number')?.dirty)
+            "
+            class="text-danger"
+          >
+            Block number is required
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="land_number">Land Number</label>
+          <input
+            id="land_number"
+            formControlName="land_number"
+            class="form-control"
+          />
+          <div
+            *ngIf="
+              houseForm.get('land_number')?.invalid &&
+              (houseForm.get('land_number')?.touched ||
+                houseForm.get('land_number')?.dirty)
+            "
+            class="text-danger"
+          >
+            Land number is required
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="model">House Model</label>
+          <select id="model" formControlName="model" class="form-control">
+            <option
+              *ngFor="let model of houseModels$ | async | keyvalue"
+              [value]="model.value.attributes.model"
+            >
+              {{ model.value.attributes.model }}
+            </option>
+          </select>
+          <div
+            *ngIf="
+              houseForm.get('model')?.invalid &&
+              (houseForm.get('model')?.touched || houseForm.get('model')?.dirty)
+            "
+            class="text-danger"
+          >
+            Model is required
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="house_type">House Type</label>
+          <select
+            id="house_type"
+            formControlName="house_type"
+            class="form-control"
+          >
+            <option value="apartment">Apartment</option>
+            <option value="townhouse">Townhouse</option>
+            <option value="detached">Detached</option>
+          </select>
+          <div
+            *ngIf="
+              houseForm.get('house_type')?.invalid &&
+              (houseForm.get('house_type')?.touched ||
+                houseForm.get('house_type')?.dirty)
+            "
+            class="text-danger"
+          >
+            House type is required
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="price">Price</label>
+          <input
+            id="price"
+            formControlName="price"
+            class="form-control"
+            type="number"
+          />
+          <div
+            *ngIf="
+              houseForm.get('price')?.invalid &&
+              (houseForm.get('price')?.touched || houseForm.get('price')?.dirty)
+            "
+            class="text-danger"
+          >
+            Price must be greater than 0
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="status">Status</label>
+          <select id="status" formControlName="status" class="form-control">
+            <option value="available">Available</option>
+            <option value="booked">Booked</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="houseForm.invalid"
+    >
+      {{ houseId ? "Update" : "Create" }}
+    </button>
+  </form>
+</div>

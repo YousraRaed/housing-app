@@ -1,0 +1,37 @@
+.form-inline {
+  display: flex;
+  align-items: flex-start;
+
+  .btn {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+    background-color: transparent;
+    color: black;
+    border-color: transparent;
+    span {
+      display: flex;
+      align-items: center;
+    }
+
+    i {
+      margin-left: 5px;
+    }
+  }
+  .img {
+    width: 15px;
+    margin: 0 5px;
+  }
+  .question {
+    max-width: 300px;
+    margin-right: 10px;
+  }
+}
+@media (max-width: 576px) {
+  .form-inline {
+    display: block;
+  }
+  .question {
+    padding-bottom: 15px;
+  }
+}

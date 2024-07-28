@@ -1,0 +1,10 @@
+<nav class="header-container navbar navbar-expand-lg navbar-light bg-light">
+  <div class="ml-auto d-flex align-items-center">
+    <ng-container *ngIf="isAuthenticated$ | async; else loginTemplate">
+      <app-logout></app-logout>
+    </ng-container>
+    <ng-template #loginTemplate>
+      <app-login></app-login>
+    </ng-template>
+  </div>
+</nav>

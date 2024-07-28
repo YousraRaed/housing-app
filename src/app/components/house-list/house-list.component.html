@@ -1,0 +1,100 @@
+<div class="container">
+  <form [formGroup]="filterForm" class="row mb-3">
+    <div class="col-md-2">
+      <input
+        formControlName="house_number"
+        class="form-control"
+        placeholder="House Number"
+      />
+    </div>
+    <div class="col-md-2">
+      <input
+        formControlName="block_number"
+        class="form-control"
+        placeholder="Block Number"
+      />
+    </div>
+    <div class="col-md-2">
+      <input
+        formControlName="land_number"
+        class="form-control"
+        placeholder="Land Number"
+      />
+    </div>
+    <div class="col-md-2">
+      <input
+        formControlName="min_price"
+        type="number"
+        class="form-control"
+        placeholder="Min Price"
+      />
+    </div>
+    <div class="col-md-2">
+      <input
+        formControlName="max_price"
+        type="number"
+        class="form-control"
+        placeholder="Max Price"
+      />
+    </div>
+  </form>
+
+  <div *ngFor="let model of houseModelsKeys; let i = index">
+    <p>
+      <button
+        class="btn model-name"
+        [class.btn-primary]="collapseStates[i]"
+        [class.btn-outline-primary]="!collapseStates[i]"
+        type="button"
+        (click)="toggleCollapse(i)"
+      >
+        {{ model.title | titlecase }} - {{ model.house_type | titlecase }}
+      </button>
+    </p>
+    <div *ngIf="collapseStates[i]" class="collapse show">
+      <div class="card card-body">
+        <div class="media mb-3">
+          <div class="media-body">
+            <h5 class="mt-0">{{ model.media.title }}</h5>
+            <p>{{ model.media.description }}</p>
+          </div>
+          <img
+            [src]="model.media.banner"
+            class="mr-3"
+            [alt]="model.media.title"
+          />
+        </div>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>House number</th>
+              <th>Block No</th>
+              <th>Land No</th>
+              <th>Price</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let house of housesGroupedByModel[model.title]?.houses">
+              <td>{{ house.attributes.house_number }}</td>
+              <td>{{ house.attributes.block_number }}</td>
+              <td>{{ house.attributes.land_number }}</td>
+              <td>{{ house.attributes.price | currency }}</td>
+              <td>{{ house.attributes.status }}</td>
+              <td>
+                <button
+                  *ngIf="isAuthenticated$ | async"
+                  class="btn btn-primary btn-sm"
+                  (click)="editHouse(house.id)"
+                >
+                  Edit
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

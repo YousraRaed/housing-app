@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  apiUrl: 'https://vn-fe-test-api.iwalabs.info',
 };
