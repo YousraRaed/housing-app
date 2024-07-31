@@ -16,7 +16,7 @@ import {
 import { HouseModel, MediaAttributes } from '../../models/house.model';
 import { selectIsAuthenticated } from 'src/app/store/selectors/auth.selector';
 import { HouseModelWithMedia } from 'src/app/models/house-with-media.model';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-house-list',
@@ -39,8 +39,7 @@ export class HouseListComponent implements OnInit {
   constructor(
     private store: Store,
     private fb: FormBuilder,
-    private router: Router,
-    private route: ActivatedRoute
+    private router: Router
   ) {
     this.filterForm = this.fb.group({
       house_number: [''],

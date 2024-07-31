@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HouseListComponent } from './house-list.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { Store, select, StoreModule } from '@ngrx/store';
+import { Store, StoreModule } from '@ngrx/store';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';

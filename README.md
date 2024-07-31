@@ -36,8 +36,15 @@ This project is a simple web application for a housing company to display and ma
 
 ### Clone the Repository
 
+link of repository on bitbucket
+https://bitbucket.org/yousraraedamer/housingapp/src/master/
+
 ```
 git clone git@bitbucket.org:yousraraedamer/housingapp.git
+```
+
+```
+git checkout master
 ```
 
 ### Install Dependencies
