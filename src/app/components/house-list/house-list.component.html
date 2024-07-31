@@ -75,7 +75,7 @@
                   <th>Land No</th>
                   <th>Price</th>
                   <th>Status</th>
-                  <th>Action</th>
+                  <th *ngIf="isAuthenticated$ | async">Action</th>
                 </tr>
               </thead>
               <tbody
@@ -91,9 +91,8 @@
                   <td>{{ house.attributes.land_number }}</td>
                   <td>{{ house.attributes.price | currency }}</td>
                   <td>{{ house.attributes.status }}</td>
-                  <td>
+                  <td *ngIf="isAuthenticated$ | async">
                     <button
-                      *ngIf="isAuthenticated$ | async"
                       class="btn btn-primary btn-sm"
                       (click)="editHouse(house.id)"
                     >
