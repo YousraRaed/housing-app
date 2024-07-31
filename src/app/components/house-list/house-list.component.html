@@ -37,6 +37,15 @@
         placeholder="Max Price"
       />
     </div>
+    <div class="col-md-2 btn-container">
+      <button
+        *ngIf="isAuthenticated$ | async"
+        class="btn btn-primary create-btn"
+        (click)="openAddHouse()"
+      >
+        Create New House
+      </button>
+    </div>
   </form>
 
   <div *ngIf="houseModelsKeys$ | async as houseModelsKeys">
@@ -61,11 +70,7 @@
                 <h5 class="mt-0">{{ model.media.title }}</h5>
                 <p>{{ model.media.description }}</p>
               </div>
-              <img
-                [src]="model.media.banner"
-                class="mr-3"
-                [alt]="model.media.title"
-              />
+              <img [src]="model.media.banner" class="mr-3" [alt]="'image'" />
             </div>
             <table class="table table-bordered">
               <thead>

@@ -169,4 +169,7 @@ export class HouseListComponent implements OnInit {
   editHouse(id: string): void {
     this.router.navigate(['/house/edit', id]);
   }
+  openAddHouse() {
+    this.router.navigate(['/house/add']);
+  }
 }

@@ -45,3 +45,31 @@
 p {
   margin: 0;
 }
+@media only screen and (max-width: 767px) {
+  .col-md-2 {
+    margin-bottom: 10px;
+  }
+  .create-btn {
+    font-size: 13px;
+  }
+  .btn-container {
+    justify-content: center;
+    display: flex;
+  }
+}
+@media only screen and (max-width: 1200px) {
+  .create-btn {
+    font-size: 13px;
+  }
+}
+
+@media only screen and (max-width: 992px) {
+  .create-btn {
+    font-size: 10px;
+  }
+}
+.create-btn {
+  background-color: transparent;
+  color: black;
+  border-color: black;
+}

@@ -7,6 +7,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { AppState } from '../../store/reducers';
 import * as fromSelectors from '../../store/selectors/house.selectors';
+import * as fromUserSelectors from '../../store/selectors/auth.selector';
 import * as fromActions from '../../store/actions/house.action';
 import { HouseModel } from '../../models/house.model';
 import { of } from 'rxjs';
@@ -82,6 +83,7 @@ describe('HouseListComponent', () => {
     store.overrideSelector(fromSelectors.selectAllHouseModels, mockHouseModels);
     store.overrideSelector(fromSelectors.selectHouseLoading, false);
     store.overrideSelector(fromSelectors.selectHouseError, '');
+    store.overrideSelector(fromUserSelectors.selectIsAuthenticated, true);
   });
 
   it('should create', () => {
