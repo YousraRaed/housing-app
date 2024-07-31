@@ -1,27 +1,86 @@
-# HousingApp
+# Housing Management Application
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.13.
+## Overview
 
-## Development server
+This project is a simple web application for a housing company to display and manage houses they want to sell. The application allows anonymous users to view and filter houses and provides admin functionality to create and update house details after logging in.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Features
 
-## Code scaffolding
+### Anonymous User
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- View a list of houses grouped by house design model.
+- Filter houses based on house number, block number, land number, minimum price, and maximum price.
 
-## Build
+### Admin User
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+- Log in with a username and password.
+- Create and update house details.
+- Log out.
 
-## Running unit tests
+## Technologies Used
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### Frontend
 
-## Running end-to-end tests
+- Angular (version 14+)
+- TypeScript
+- NgRx for state management
+- RxJS for reactive programming
+- ng-bootstrap for UI components
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+### Testing
 
-## Further help
+- Cypress for E2E testing
+- Jasmine/Karma for unit testing
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## Setup Instructions
+
+### Clone the Repository
+
+```
+git clone git@bitbucket.org:yousraraedamer/housingapp.git
+```
+
+### Install Dependencies
+
+```
+npm install
+```
+
+### Run the Application
+
+```
+npm start
+```
+
+Open your browser and navigate to http://localhost:4200. The application will automatically reload if you change any of the source files.
+
+### Environment Configuration
+
+Ensure the API URL and other configurations are correctly set in
+`src/environments/environment.ts`
+
+## Running Tests
+
+### Unit Tests
+
+Unit tests are written using Jasmine and Karma. To run the unit tests, use the following command:
+
+```
+npm start
+```
+
+### E2E Tests
+
+E2E tests are written using Cypress. To run the Cypress tests, follow these steps:
+
+1- Start the Angular Application
+
+```
+npm start
+```
+
+2- Run Cypress
+
+```
+npx cypress open
+```

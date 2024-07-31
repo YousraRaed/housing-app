@@ -67,6 +67,11 @@ export class AddUpdateHouseComponent implements OnInit, OnDestroy {
         });
       })
     );
+    this.houseForm.valueChanges.subscribe((values) => {
+      if (!values.house_number) {
+        this.houseNumberTaken = false;
+      }
+    });
   }
 
   onSubmit(): void {

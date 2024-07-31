@@ -9,7 +9,7 @@ import { AppState } from '../../store/reducers';
 import * as fromSelectors from '../../store/selectors/house.selectors';
 import * as fromActions from '../../store/actions/house.action';
 import { HouseModel } from '../../models/house.model';
-import { HttpClient } from '@angular/common/http';
+import { of } from 'rxjs';
 
 describe('HouseListComponent', () => {
   let component: HouseListComponent;
@@ -100,11 +100,15 @@ describe('HouseListComponent', () => {
     expect(spy).toHaveBeenCalledWith(fromActions.loadHouses());
   });
 
-  it('should call filterHouses and groupHousesByModel on form value changes', () => {
+  it('should call filterHouses and groupHousesByModel on form value changes', (done) => {
     fixture.detectChanges();
     component.filterForm.patchValue({ house_number: '123' });
     fixture.detectChanges();
-    expect(component.housesGroupedByModel['model1'].houses.length).toBe(1);
+
+    component.housesGroupedByModel$?.subscribe((housesGroupedByModel) => {
+      expect(housesGroupedByModel['model1'].houses.length).toBe(1);
+      done();
+    });
   });
 
   it('should filter houses correctly', () => {
@@ -129,11 +133,20 @@ describe('HouseListComponent', () => {
     expect(groupedHouses['model1'].houses.length).toBe(1);
   });
 
-  it('should toggle collapse state correctly', () => {
-    component.collapseStates = [false, false];
+  it('should toggle collapse state correctly', (done) => {
+    component.collapseStates$ = of([false, false]);
+
     component.toggleCollapse(1);
-    expect(component.collapseStates[1]).toBeTrue();
-    component.toggleCollapse(1);
-    expect(component.collapseStates[1]).toBeFalse();
+
+    component.collapseStates$?.subscribe((collapseStates) => {
+      expect(collapseStates[1]).toBeTrue();
+
+      component.toggleCollapse(1);
+
+      component.collapseStates$?.subscribe((newCollapseStates) => {
+        expect(newCollapseStates[1]).toBeFalse();
+        done();
+      });
+    });
   });
 });

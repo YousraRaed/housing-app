@@ -1,8 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
-import { Observable, Subscription, combineLatest } from 'rxjs';
-import { startWith } from 'rxjs/operators';
+import { Observable, combineLatest } from 'rxjs';
+import { startWith, map } from 'rxjs/operators';
 import {
   loadHouseModels,
   loadHouses,
@@ -16,33 +16,31 @@ import {
 import { HouseModel, MediaAttributes } from '../../models/house.model';
 import { selectIsAuthenticated } from 'src/app/store/selectors/auth.selector';
 import { HouseModelWithMedia } from 'src/app/models/house-with-media.model';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-house-list',
   templateUrl: './house-list.component.html',
   styleUrls: ['./house-list.component.scss'],
 })
-export class HouseListComponent implements OnInit, OnDestroy {
-  houses$: Observable<HouseModel[]>;
-  houseModels$: Observable<{ [key: string]: HouseModel }>;
-  loading$: Observable<boolean>;
-  error$: Observable<any>;
+export class HouseListComponent implements OnInit {
+  houses$?: Observable<HouseModel[]>;
+  houseModels$?: Observable<{ [key: string]: HouseModel }>;
+  loading$?: Observable<boolean>;
+  error$?: Observable<any>;
   filterForm: FormGroup;
-  housesGroupedByModel: { [key: string]: HouseModelWithMedia } = {};
-  houseModelsKeys: {
-    title: string;
-    media: MediaAttributes;
-    house_type: string;
-  }[] = [];
-  housesSubscription: Subscription | undefined;
-  collapseStates: boolean[] = [];
-  isAuthenticated$: Observable<boolean>;
+  housesGroupedByModel$?: Observable<{ [key: string]: HouseModelWithMedia }>;
+  houseModelsKeys$?: Observable<
+    { title: string; media: MediaAttributes; house_type: string }[]
+  >;
+  collapseStates$?: Observable<boolean[]>;
+  isAuthenticated$?: Observable<boolean>;
 
   constructor(
     private store: Store,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     this.filterForm = this.fb.group({
       house_number: [''],
@@ -51,42 +49,48 @@ export class HouseListComponent implements OnInit, OnDestroy {
       min_price: [''],
       max_price: [''],
     });
+  }
 
+  ngOnInit(): void {
+    this.reloadData();
+  }
+  reloadData() {
+    this.store.dispatch(loadHouseModels());
+    this.store.dispatch(loadHouses());
     this.houses$ = this.store.pipe(select(selectAllHouses));
     this.houseModels$ = this.store.pipe(select(selectAllHouseModels));
     this.loading$ = this.store.pipe(select(selectHouseLoading));
     this.error$ = this.store.pipe(select(selectHouseError));
     this.isAuthenticated$ = this.store.pipe(select(selectIsAuthenticated));
-  }
+    const filterFormValues$ = this.filterForm.valueChanges.pipe(
+      startWith(this.filterForm.value)
+    );
 
-  ngOnInit(): void {
-    this.store.dispatch(loadHouseModels());
-    this.store.dispatch(loadHouses());
-
-    this.housesSubscription = combineLatest([
+    this.housesGroupedByModel$ = combineLatest([
       this.houses$,
       this.houseModels$,
-      this.filterForm.valueChanges.pipe(startWith(this.filterForm.value)),
-    ]).subscribe(([houses, houseModels, filterValues]) => {
-      const filteredHouses = this.filterHouses(houses, filterValues);
-      this.housesGroupedByModel = this.groupHousesByModel(
-        filteredHouses,
-        houseModels
-      );
+      filterFormValues$,
+    ]).pipe(
+      map(([houses, houseModels, filterValues]) => {
+        const filteredHouses = this.filterHouses(houses, filterValues);
+        return this.groupHousesByModel(filteredHouses, houseModels);
+      })
+    );
 
-      this.houseModelsKeys = Object.keys(this.housesGroupedByModel).map(
-        (key) => {
-          return {
-            title: key,
-            media: this.housesGroupedByModel[key].media,
-            house_type: this.housesGroupedByModel[key].house_type,
-          };
-        }
-      );
-      this.collapseStates = new Array(this.houseModelsKeys.length).fill(false);
-    });
+    this.houseModelsKeys$ = this.housesGroupedByModel$.pipe(
+      map((housesGroupedByModel) =>
+        Object.keys(housesGroupedByModel).map((key) => ({
+          title: key,
+          media: housesGroupedByModel[key].media,
+          house_type: housesGroupedByModel[key].house_type,
+        }))
+      )
+    );
+
+    this.collapseStates$ = this.houseModelsKeys$.pipe(
+      map((houseModelsKeys) => new Array(houseModelsKeys.length).fill(false))
+    );
   }
-
   filterHouses(houses: HouseModel[], filterValues: any): HouseModel[] {
     const { house_number, block_number, land_number, min_price, max_price } =
       filterValues;
@@ -132,14 +136,16 @@ export class HouseListComponent implements OnInit, OnDestroy {
   }
 
   toggleCollapse(index: number): void {
-    this.collapseStates[index] = !this.collapseStates[index];
+    this.collapseStates$ = this.collapseStates$?.pipe(
+      map((states) => {
+        const newStates = [...states];
+        newStates[index] = !newStates[index];
+        return newStates;
+      })
+    );
   }
+
   editHouse(id: string): void {
     this.router.navigate(['/house/edit', id]);
-  }
-  ngOnDestroy(): void {
-    if (this.housesSubscription) {
-      this.housesSubscription.unsubscribe();
-    }
   }
 }
