@@ -4,7 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --configuration production --base-href /housing-app/",
+    "deploy": "ng build --configuration production --base-href /housing-app/ && npx angular-cli-ghpages --dir=dist/housing-app",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
